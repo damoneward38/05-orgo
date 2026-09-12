@@ -1,0 +1,4 @@
+// src/utils/logger.ts
+export function logError(message: string, error?: any) {
+  console.error(`[${new Date().toISOString()}] ${message}`, error);
+}

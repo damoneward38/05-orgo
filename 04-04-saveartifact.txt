@@ -1,0 +1,11 @@
+// src/utils/persistentStorage.ts
+import { v4 as uuidv4 } from 'uuid';
+import { db } from './db';
+
+export async function saveArtifact(data: any): Promise<void> {
+  const artifactId = uuidv4(); // generate unique UUID
+  await db.run(
+    `INSERT INTO artifacts (artifact_id, data) VALUES (?, ?)`,
+    [artifactId, JSON.stringify(data)]
+  );
+}

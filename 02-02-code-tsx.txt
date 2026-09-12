@@ -1,0 +1,33 @@
+// src/components/Header.tsx
+import React, { useEffect, useState } from 'react';
+import { fetchHealthStatus } from '../services/healthService';
+
+export const Header: React.FC = () => {
+  const [workerConnected, setWorkerConnected] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      try {
+        const status = await fetchHealthStatus();
+        setWorkerConnected(status.connected);
+      } catch {
+        setWorkerConnected(false);
+      }
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <header className="app-header">
+      <h1>My App</h1>
+      {workerConnected === null ? (
+        <span className="status pending">Checking connection…</span>
+      ) : workerConnected ? (
+        <span className="status connected">Worker Connected</span>
+      ) : (
+        <span className="status disconnected">Worker Disconnected</span>
+      )}
+    </header>
+  );
+};

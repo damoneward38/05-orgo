@@ -1,0 +1,2 @@
+// src/utils/emailMock.ts (removed)
+// This file is no longer needed. All email dispatches now use the real EmailService.

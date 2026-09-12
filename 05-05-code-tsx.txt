@@ -1,0 +1,40 @@
+// src/components/MacOsMonitorBridge.tsx
+import React, { useEffect, useState } from 'react';
+import { logError } from '../utils/logger';
+
+export const MacOsMonitorBridge: React.FC = () => {
+  const [wsState, setWsState] = useState<'Connecting' | 'Connected' | 'Disconnected'>('Connecting');
+
+  useEffect(() => {
+    const ws = new WebSocket('wss://backend.example.com/bridge');
+
+    ws.onopen = () => {
+      setWsState('Connected');
+    };
+
+    ws.onerror = (e) => {
+      logError('WebSocket error', e);
+      setWsState('Disconnected');
+    };
+
+    ws.onclose = () => {
+      logError('WebSocket closed');
+      setWsState('Disconnected');
+    };
+
+    return () => {
+      ws.close();
+    };
+  }, []);
+
+  return (
+    <div className="bridge-status">
+      <span>Bridge Status: {wsState}</span>
+      {wsState === 'Disconnected' && (
+        <div className="error-message">
+          Unable to connect to the MacOS monitor bridge. Check logs for details.
+        </div>
+      )}
+    </div>
+  );
+};

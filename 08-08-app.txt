@@ -1,0 +1,27 @@
+// src/App.tsx (example usage of new email service)
+import React from 'react';
+import { sendEmail } from './services/emailService';
+
+function App() {
+  const handleNotify = async () => {
+    try {
+      await sendEmail({
+        to: 'user@example.com',
+        subject: 'Test Notification',
+        body: 'This is a test email.',
+      });
+      alert('Email sent successfully');
+    } catch (err) {
+      console.error(err);
+      alert('Failed to send email');
+    }
+  };
+
+  return (
+    <div>
+      <button onClick={handleNotify}>Send Test Email</button>
+    </div>
+  );
+}
+
+export default App;

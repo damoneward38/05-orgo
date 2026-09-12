@@ -1,0 +1,10 @@
+// src/services/healthService.ts
+export interface HealthStatus {
+  connected: boolean;
+}
+
+export async function fetchHealthStatus(): Promise<HealthStatus> {
+  const res = await fetch('/api/health/worker');
+  if (!res.ok) throw new Error('Health check failed');
+  return res.json();
+}

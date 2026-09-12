@@ -1,0 +1,23 @@
+// src/services/emailService.ts
+import { v4 as uuidv4 } from 'uuid';
+
+export interface EmailPayload {
+  to: string;
+  subject: string;
+  body: string;
+}
+
+export async function sendEmail(payload: EmailPayload): Promise<void> {
+  const response = await fetch('/api/notifications/email', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(payload),
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`Email send failed: ${errorText}`);
+  }
+}
